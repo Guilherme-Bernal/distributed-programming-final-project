@@ -1,0 +1,83 @@
+{% extends 'base/base.html' %}
+
+{% block title %}My Teaching - Class Manager{% endblock %}
+
+{% block content %}
+<div class="mb-8">
+    <div class="flex justify-between items-center">
+        <div>
+            <h2 class="text-4xl font-bold text-gray-800">My Teaching Schedule</h2>
+            <p class="text-gray-600 mt-2">Classes you are teaching</p>
+        </div>
+        <a href="{% url 'classes:create' %}" 
+           class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg transition-colors">
+            + Create New Class
+        </a>
+    </div>
+</div>
+
+{% if teaching_classes %}
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    {% for class in teaching_classes %}
+    <div class="bg-white border-l-4 border-green-600 rounded-lg shadow-md p-6">
+        <div class="flex items-center justify-between mb-4">
+            <span class="text-sm font-semibold text-green-600 bg-green-100 px-3 py-1 rounded-full">
+                {{ class.subject.code }}
+            </span>
+            <span class="text-sm text-gray-500">{{ class.semester }}</span>
+        </div>
+        
+        <h3 class="text-xl font-bold text-gray-900 mb-3">{{ class.subject.name }}</h3>
+        
+        <div class="grid grid-cols-2 gap-4 mb-4">
+            <div class="bg-gray-50 p-3 rounded-lg">
+                <p class="text-xs text-gray-500">Schedule</p>
+                <p class="font-semibold text-gray-800">{{ class.schedule }}</p>
+            </div>
+            <div class="bg-gray-50 p-3 rounded-lg">
+                <p class="text-xs text-gray-500">Room</p>
+                <p class="font-semibold text-gray-800">{{ class.room|default:"TBA" }}</p>
+            </div>
+            <div class="bg-gray-50 p-3 rounded-lg">
+                <p class="text-xs text-gray-500">Enrolled</p>
+                <p class="font-semibold text-gray-800">{{ class.enrolled_count }}/{{ class.max_students }}</p>
+            </div>
+            <div class="bg-gray-50 p-3 rounded-lg">
+                <p class="text-xs text-gray-500">Credits</p>
+                <p class="font-semibold text-gray-800">{{ class.subject.credits }}</p>
+            </div>
+        </div>
+        
+        <div class="flex gap-2">
+            <a href="{% url 'classes:detail' class.pk %}" 
+               class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg text-center transition-colors">
+                View Details
+            </a>
+            <a href="{% url 'classes:edit' class.pk %}" 
+               class="flex-1 bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-2 px-4 rounded-lg text-center transition-colors">
+                Edit
+            </a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<div class="mt-8 bg-green-50 border border-green-200 rounded-lg p-6">
+    <h3 class="font-bold text-green-900 mb-2">📊 Teaching Summary</h3>
+    <ul class="text-green-800 space-y-1">
+        <li><strong>Total Classes:</strong> {{ teaching_classes.count }}</li>
+        <li><strong>Total Students:</strong> {{ total_students }}</li>
+    </ul>
+</div>
+{% else %}
+<div class="bg-white rounded-lg shadow-md p-12 text-center">
+    <div class="text-6xl mb-4">👨‍🏫</div>
+    <h3 class="text-2xl font-bold text-gray-700 mb-2">No Classes Yet</h3>
+    <p class="text-gray-500 mb-6">You haven't created any classes yet.</p>
+    <a href="{% url 'classes:create' %}" 
+       class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors">
+        Create Your First Class
+    </a>
+</div>
+{% endif %}
+{% endblock %}

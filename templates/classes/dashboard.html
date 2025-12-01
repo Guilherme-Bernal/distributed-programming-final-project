@@ -1,0 +1,199 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Dashboard - Class Manager{% endblock %}
+
+{% block content %}
+<div class="mb-8">
+    <h2 class="text-4xl font-bold text-gray-800 mb-2">📊 Dashboard</h2>
+    <p class="text-gray-600">Overview of the class management system</p>
+</div>
+
+<!-- Statistics Cards -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+    <div class="bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg shadow-md p-6 text-white">
+        <div class="flex items-center justify-between mb-2">
+            <h3 class="text-white text-sm font-semibold opacity-90">Total Classes</h3>
+            <span class="text-4xl opacity-75">📚</span>
+        </div>
+        <p class="text-4xl font-bold">{{ total_classes }}</p>
+        <p class="text-sm opacity-75 mt-2">Active classes</p>
+    </div>
+    
+    <div class="bg-gradient-to-br from-green-500 to-green-600 rounded-lg shadow-md p-6 text-white">
+        <div class="flex items-center justify-between mb-2">
+            <h3 class="text-white text-sm font-semibold opacity-90">Total Students</h3>
+            <span class="text-4xl opacity-75">🎓</span>
+        </div>
+        <p class="text-4xl font-bold">{{ total_students }}</p>
+        <p class="text-sm opacity-75 mt-2">Registered students</p>
+    </div>
+    
+    <div class="bg-gradient-to-br from-purple-500 to-purple-600 rounded-lg shadow-md p-6 text-white">
+        <div class="flex items-center justify-between mb-2">
+            <h3 class="text-white text-sm font-semibold opacity-90">Total Teachers</h3>
+            <span class="text-4xl opacity-75">👨‍🏫</span>
+        </div>
+        <p class="text-4xl font-bold">{{ total_teachers }}</p>
+        <p class="text-sm opacity-75 mt-2">Faculty members</p>
+    </div>
+    
+    <div class="bg-gradient-to-br from-orange-500 to-orange-600 rounded-lg shadow-md p-6 text-white">
+        <div class="flex items-center justify-between mb-2">
+            <h3 class="text-white text-sm font-semibold opacity-90">Total Subjects</h3>
+            <span class="text-4xl opacity-75">📖</span>
+        </div>
+        <p class="text-4xl font-bold">{{ total_subjects }}</p>
+        <p class="text-sm opacity-75 mt-2">Available subjects</p>
+    </div>
+</div>
+
+<!-- User Specific Stats (if logged in) -->
+{% if user.is_authenticated %}
+<div class="bg-gradient-to-r from-indigo-500 to-purple-600 rounded-lg shadow-md p-6 text-white mb-8">
+    <h3 class="text-2xl font-bold mb-4">👤 Your Statistics</h3>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {% if user.student_profile %}
+        <div>
+            <p class="text-sm opacity-90">Enrolled Classes</p>
+            <p class="text-3xl font-bold">{{ user_stats.enrolled_count|default:0 }}</p>
+        </div>
+        <div>
+            <p class="text-sm opacity-90">Total Credits</p>
+            <p class="text-3xl font-bold">{{ user_stats.total_credits|default:0 }}</p>
+        </div>
+        <div>
+            <p class="text-sm opacity-90">Student</p>
+            <p class="text-lg font-semibold">{{ user.student_profile.enrollment_number }}</p>
+        </div>
+        {% elif user.teacher_profile %}
+        <div>
+            <p class="text-sm opacity-90">Teaching Classes</p>
+            <p class="text-3xl font-bold">{{ user_stats.teaching_count|default:0 }}</p>
+        </div>
+        <div>
+            <p class="text-sm opacity-90">Total Students</p>
+            <p class="text-3xl font-bold">{{ user_stats.total_students|default:0 }}</p>
+        </div>
+        <div>
+            <p class="text-sm opacity-90">Teacher</p>
+            <p class="text-lg font-semibold">{{ user.teacher_profile.employee_id }}</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endif %}
+
+<!-- Enrollment Statistics -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <h3 class="text-xl font-bold mb-4 flex items-center">
+            <span class="text-2xl mr-2">📊</span>
+            Enrollment by Semester
+        </h3>
+        <div class="space-y-4">
+            {% for semester, count in enrollments_by_semester.items %}
+            <div>
+                <div class="flex justify-between mb-1">
+                    <span class="text-sm font-medium">{{ semester }}</span>
+                    <span class="text-sm font-medium text-blue-600">{{ count }} enrollment{{ count|pluralize }}</span>
+                </div>
+                <div class="w-full bg-gray-200 rounded-full h-3">
+                    {% if count <= 10 %}
+                        <div class="bg-blue-600 h-3 rounded-full transition-all w-1/4"></div>
+                    {% elif count <= 20 %}
+                        <div class="bg-blue-600 h-3 rounded-full transition-all w-1/2"></div>
+                    {% elif count <= 30 %}
+                        <div class="bg-blue-600 h-3 rounded-full transition-all w-3/4"></div>
+                    {% else %}
+                        <div class="bg-blue-600 h-3 rounded-full transition-all w-full"></div>
+                    {% endif %}
+                </div>
+            </div>
+            {% empty %}
+            <p class="text-gray-500 text-center py-4">No enrollment data available</p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <h3 class="text-xl font-bold mb-4 flex items-center">
+            <span class="text-2xl mr-2">🔥</span>
+            Popular Classes
+        </h3>
+        <div class="space-y-3">
+            {% for class in popular_classes %}
+            <a href="{% url 'classes:detail' class.pk %}" class="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-blue-50 transition-colors">
+                <div class="flex-1">
+                    <p class="font-semibold text-gray-800">{{ class.subject.code }}</p>
+                    <p class="text-sm text-gray-600">{{ class.subject.name }}</p>
+                </div>
+                <div class="text-right">
+                    <p class="text-sm font-semibold text-blue-600">{{ class.student_count }}/{{ class.max_students }}</p>
+                    <p class="text-xs text-gray-500">students</p>
+                </div>
+            </a>
+            {% empty %}
+            <p class="text-gray-500 text-center py-4">No classes yet</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<!-- Recent Activity -->
+{% if user.is_authenticated %}
+<div class="bg-white rounded-lg shadow-md p-6 mb-8">
+    <h3 class="text-xl font-bold mb-4 flex items-center">
+        <span class="text-2xl mr-2">⏰</span>
+        Quick Links
+    </h3>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {% if user.student_profile %}
+        <a href="{% url 'classes:my_classes' %}" class="p-4 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors">
+            <h4 class="font-semibold text-blue-900 mb-1">📚 My Enrolled Classes</h4>
+            <p class="text-sm text-blue-700">View and manage your enrolled classes</p>
+        </a>
+        <a href="{% url 'classes:list' %}" class="p-4 bg-green-50 rounded-lg hover:bg-green-100 transition-colors">
+            <h4 class="font-semibold text-green-900 mb-1">🔍 Browse Classes</h4>
+            <p class="text-sm text-green-700">Find new classes to enroll in</p>
+        </a>
+        {% elif user.teacher_profile %}
+        <a href="{% url 'classes:my_teaching' %}" class="p-4 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors">
+            <h4 class="font-semibold text-purple-900 mb-1">👨‍🏫 My Teaching Schedule</h4>
+            <p class="text-sm text-purple-700">View your classes and students</p>
+        </a>
+        <a href="{% url 'classes:create' %}" class="p-4 bg-green-50 rounded-lg hover:bg-green-100 transition-colors">
+            <h4 class="font-semibold text-green-900 mb-1">➕ Create New Class</h4>
+            <p class="text-sm text-green-700">Set up a new class for students</p>
+        </a>
+        {% endif %}
+    </div>
+</div>
+{% endif %}
+
+<!-- Quick Actions -->
+<div class="bg-white rounded-lg shadow-md p-6">
+    <h3 class="text-xl font-bold mb-4">⚡ Quick Actions</h3>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <a href="{% url 'classes:list' %}" class="p-4 border-2 border-gray-200 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition-all text-center">
+            <div class="text-3xl mb-2">📚</div>
+            <p class="font-semibold text-gray-700">View Classes</p>
+        </a>
+        <a href="{% url 'classes:subject_list' %}" class="p-4 border-2 border-gray-200 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition-all text-center">
+            <div class="text-3xl mb-2">📖</div>
+            <p class="font-semibold text-gray-700">View Subjects</p>
+        </a>
+        {% if user.is_authenticated and user.teacher_profile %}
+        <a href="{% url 'classes:create' %}" class="p-4 border-2 border-gray-200 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition-all text-center">
+            <div class="text-3xl mb-2">➕</div>
+            <p class="font-semibold text-gray-700">Create Class</p>
+        </a>
+        {% endif %}
+        {% if user.is_staff %}
+        <a href="/admin/" class="p-4 border-2 border-gray-200 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition-all text-center">
+            <div class="text-3xl mb-2">⚙️</div>
+            <p class="font-semibold text-gray-700">Admin Panel</p>
+        </a>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

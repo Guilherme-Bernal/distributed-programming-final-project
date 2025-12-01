@@ -1,0 +1,128 @@
+syntax = "proto3";
+
+package classes;
+
+// Service definition
+service ClassService {
+    // Enrollment operations
+    rpc EnrollStudent (EnrollmentRequest) returns (EnrollmentResponse);
+    rpc UnenrollStudent (EnrollmentRequest) returns (EnrollmentResponse);
+    
+    // Class operations
+    rpc CreateClass (CreateClassRequest) returns (ClassResponse);
+    rpc GetClass (GetClassRequest) returns (ClassDetailResponse);
+    rpc ListClasses (ListClassesRequest) returns (ListClassesResponse);
+    
+    // Teacher operations
+    rpc GetTeacherClasses (GetTeacherClassesRequest) returns (ListClassesResponse);
+    
+    // Student operations
+    rpc GetStudentClasses (GetStudentClassesRequest) returns (ListClassesResponse);
+}
+
+// Messages for Enrollment
+message EnrollmentRequest {
+    int32 class_id = 1;
+    int32 student_id = 2;
+}
+
+message EnrollmentResponse {
+    bool success = 1;
+    string message = 2;
+    int32 class_id = 3;
+    int32 student_id = 4;
+}
+
+// Messages for Class operations
+message CreateClassRequest {
+    int32 subject_id = 1;
+    int32 teacher_id = 2;
+    string schedule = 3;
+    string room = 4;
+    string semester = 5;
+    int32 max_students = 6;
+    bool is_active = 7;
+}
+
+message ClassResponse {
+    bool success = 1;
+    string message = 2;
+    int32 class_id = 3;
+}
+
+message GetClassRequest {
+    int32 class_id = 1;
+}
+
+message ListClassesRequest {
+    string semester = 1;
+    bool active_only = 2;
+}
+
+message GetTeacherClassesRequest {
+    int32 teacher_id = 1;
+    string semester = 2;
+}
+
+message GetStudentClassesRequest {
+    int32 student_id = 1;
+    string semester = 2;
+}
+
+// Detailed class information
+message ClassDetailResponse {
+    int32 id = 1;
+    SubjectInfo subject = 2;
+    TeacherInfo teacher = 3;
+    repeated StudentInfo students = 4;
+    string schedule = 5;
+    string room = 6;
+    string semester = 7;
+    int32 max_students = 8;
+    int32 enrolled_count = 9;
+    int32 available_seats = 10;
+    bool is_active = 11;
+}
+
+message ListClassesResponse {
+    repeated ClassSummary classes = 1;
+}
+
+message ClassSummary {
+    int32 id = 1;
+    string subject_code = 2;
+    string subject_name = 3;
+    string teacher_name = 4;
+    string schedule = 5;
+    string room = 6;
+    string semester = 7;
+    int32 max_students = 8;
+    int32 enrolled_count = 9;
+    int32 available_seats = 10;
+    bool is_full = 11;
+    bool is_active = 12;
+}
+
+// Supporting messages
+message SubjectInfo {
+    int32 id = 1;
+    string code = 2;
+    string name = 3;
+    string description = 4;
+    int32 credits = 5;
+}
+
+message TeacherInfo {
+    int32 id = 1;
+    string employee_id = 2;
+    string full_name = 3;
+    string specialization = 4;
+    string email = 5;
+}
+
+message StudentInfo {
+    int32 id = 1;
+    string enrollment_number = 2;
+    string full_name = 3;
+    string email = 4;
+}

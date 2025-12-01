@@ -1,0 +1,51 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Profile - Class Manager{% endblock %}
+
+{% block content %}
+<div class="bg-white rounded-lg shadow-md p-8">
+    <h2 class="text-3xl font-bold mb-6 text-gray-800">My Profile</h2>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+            <h3 class="font-bold text-gray-700 mb-4">Personal Information</h3>
+            <ul class="space-y-2 text-gray-600">
+                <li><strong>Username:</strong> {{ user.username }}</li>
+                <li><strong>Name:</strong> {{ user.get_full_name|default:"Not set" }}</li>
+                <li><strong>Email:</strong> {{ user.email }}</li>
+                
+                {% if user.student_profile %}
+                <li><strong>Type:</strong> Student 🎓</li>
+                <li><strong>Enrollment:</strong> {{ user.student_profile.enrollment_number }}</li>
+                <li><strong>Phone:</strong> {{ user.student_profile.phone_number|default:"Not set" }}</li>
+                {% elif user.teacher_profile %}
+                <li><strong>Type:</strong> Teacher 👨‍🏫</li>
+                <li><strong>Employee ID:</strong> {{ user.teacher_profile.employee_id }}</li>
+                <li><strong>Specialization:</strong> {{ user.teacher_profile.specialization }}</li>
+                <li><strong>Phone:</strong> {{ user.teacher_profile.phone_number|default:"Not set" }}</li>
+                {% endif %}
+            </ul>
+        </div>
+        
+        <div>
+            <h3 class="font-bold text-gray-700 mb-4">Quick Stats</h3>
+            {% if user.student_profile %}
+            <ul class="space-y-2 text-gray-600">
+                <li><strong>Enrolled Classes:</strong> {{ user.student_profile.enrolled_classes.count }}</li>
+            </ul>
+            {% elif user.teacher_profile %}
+            <ul class="space-y-2 text-gray-600">
+                <li><strong>Teaching Classes:</strong> {{ user.teacher_profile.classes.count }}</li>
+            </ul>
+            {% endif %}
+        </div>
+    </div>
+    
+    <div class="mt-6">
+        <a href="{% url 'accounts:profile_edit' %}" 
+           class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg transition-colors">
+            Edit Profile (Coming Soon)
+        </a>
+    </div>
+</div>
+{% endblock %}

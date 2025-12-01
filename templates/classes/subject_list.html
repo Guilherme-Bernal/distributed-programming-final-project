@@ -1,0 +1,71 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Subjects - Class Manager{% endblock %}
+
+{% block content %}
+<div class="mb-8">
+    <div class="flex justify-between items-center">
+        <div>
+            <h2 class="text-4xl font-bold text-gray-800">All Subjects</h2>
+            <p class="text-gray-600 mt-2">Browse available subjects in the curriculum</p>
+        </div>
+        {% if user.is_authenticated and user.is_staff %}
+        <a href="{% url 'classes:subject_create' %}" 
+           class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg transition-colors">
+            + Add Subject
+        </a>
+        {% endif %}
+    </div>
+</div>
+
+{% if subjects %}
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    {% for subject in subjects %}
+    <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-xl transition-shadow">
+        <div class="flex items-center justify-between mb-4">
+            <span class="text-lg font-bold text-blue-600">{{ subject.code }}</span>
+            <span class="bg-blue-100 text-blue-800 text-xs font-semibold px-3 py-1 rounded-full">
+                {{ subject.credits }} Credits
+            </span>
+        </div>
+        
+        <h3 class="text-xl font-bold text-gray-900 mb-3">{{ subject.name }}</h3>
+        
+        {% if subject.description %}
+        <p class="text-gray-600 text-sm mb-4 line-clamp-3">{{ subject.description }}</p>
+        {% else %}
+        <p class="text-gray-400 text-sm mb-4 italic">No description available</p>
+        {% endif %}
+        
+        <div class="border-t pt-4 mt-4">
+            <div class="flex items-center justify-between text-sm">
+                <span class="text-gray-600">
+                    <strong>{{ subject.classes.count }}</strong> class{{ subject.classes.count|pluralize:"es" }} available
+                </span>
+                <a href="{% url 'classes:list' %}?subject={{ subject.id }}" 
+                   class="text-blue-600 hover:text-blue-700 font-medium">
+                    View Classes →
+                </a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="bg-white rounded-lg shadow-md p-12 text-center">
+    <div class="text-6xl mb-4">📚</div>
+    <h3 class="text-2xl font-bold text-gray-700 mb-2">No Subjects Available</h3>
+    <p class="text-gray-500 mb-6">No subjects have been added yet.</p>
+    {% if user.is_authenticated and user.is_staff %}
+    <a href="{% url 'classes:subject_create' %}" 
+       class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors">
+        Add First Subject
+    </a>
+    {% else %}
+    <a href="/admin/" class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors">
+        Go to Admin Panel
+    </a>
+    {% endif %}
+</div>
+{% endif %}
+{% endblock %}

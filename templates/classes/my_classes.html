@@ -1,0 +1,67 @@
+{% extends 'base/base.html' %}
+
+{% block title %}My Classes - Class Manager{% endblock %}
+
+{% block content %}
+<div class="mb-8">
+    <h2 class="text-4xl font-bold text-gray-800">My Enrolled Classes</h2>
+    <p class="text-gray-600 mt-2">Classes you are currently enrolled in</p>
+</div>
+
+{% if enrolled_classes %}
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    {% for class in enrolled_classes %}
+    <div class="bg-white border-l-4 border-blue-600 rounded-lg shadow-md p-6">
+        <div class="flex items-center justify-between mb-4">
+            <span class="text-sm font-semibold text-blue-600 bg-blue-100 px-3 py-1 rounded-full">
+                {{ class.subject.code }}
+            </span>
+            <span class="text-sm text-gray-500">{{ class.semester }}</span>
+        </div>
+        
+        <h3 class="text-xl font-bold text-gray-900 mb-3">{{ class.subject.name }}</h3>
+        
+        <div class="space-y-2 text-sm text-gray-600 mb-4">
+            <p><strong>👨‍🏫 Teacher:</strong> {{ class.teacher.full_name }}</p>
+            <p><strong>🕐 Schedule:</strong> {{ class.schedule }}</p>
+            <p><strong>🚪 Room:</strong> {{ class.room|default:"TBA" }}</p>
+            <p><strong>📚 Credits:</strong> {{ class.subject.credits }}</p>
+        </div>
+        
+        <div class="flex gap-2">
+            <a href="{% url 'classes:detail' class.pk %}" 
+               class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg text-center transition-colors">
+                View
+            </a>
+            <form method="post" action="{% url 'classes:unenroll' class.pk %}" class="flex-1">
+                {% csrf_token %}
+                <button type="submit" 
+                        onclick="return confirm('Unenroll from this class?')"
+                        class="w-full bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded-lg transition-colors">
+                    Drop
+                </button>
+            </form>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<div class="mt-8 bg-blue-50 border border-blue-200 rounded-lg p-6">
+    <h3 class="font-bold text-blue-900 mb-2">📊 Summary</h3>
+    <ul class="text-blue-800 space-y-1">
+        <li><strong>Total Classes:</strong> {{ enrolled_classes.count }}</li>
+        <li><strong>Total Credits:</strong> {{ total_credits }}</li>
+    </ul>
+</div>
+{% else %}
+<div class="bg-white rounded-lg shadow-md p-12 text-center">
+    <div class="text-6xl mb-4">📝</div>
+    <h3 class="text-2xl font-bold text-gray-700 mb-2">No Enrolled Classes</h3>
+    <p class="text-gray-500 mb-6">You haven't enrolled in any classes yet.</p>
+    <a href="{% url 'classes:list' %}" 
+       class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors">
+        Browse Available Classes
+    </a>
+</div>
+{% endif %}
+{% endblock %}

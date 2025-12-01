@@ -1,0 +1,59 @@
+{% extends 'base/base.html' %}
+
+{% block title %}{{ class.subject.code }} - Class Manager{% endblock %}
+
+{% block content %}
+<div class="bg-white rounded-lg shadow-md p-6">
+    <div class="mb-6">
+        <span class="text-sm font-semibold text-blue-600 bg-blue-100 px-3 py-1 rounded-full">
+            {{ class.subject.code }}
+        </span>
+    </div>
+    
+    <h2 class="text-3xl font-bold mb-2 text-gray-800">{{ class.subject.name }}</h2>
+    <p class="text-gray-600 mb-6">{{ class.subject.description }}</p>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div>
+            <h3 class="font-bold text-gray-700 mb-2">Class Information</h3>
+            <ul class="space-y-2 text-gray-600">
+                <li><strong>Teacher:</strong> {{ class.teacher.full_name }}</li>
+                <li><strong>Schedule:</strong> {{ class.schedule }}</li>
+                <li><strong>Room:</strong> {{ class.room|default:"TBA" }}</li>
+                <li><strong>Semester:</strong> {{ class.semester }}</li>
+                <li><strong>Credits:</strong> {{ class.subject.credits }}</li>
+            </ul>
+        </div>
+        
+        <div>
+            <h3 class="font-bold text-gray-700 mb-2">Enrollment</h3>
+            <ul class="space-y-2 text-gray-600">
+                <li><strong>Enrolled:</strong> {{ class.enrolled_count }}</li>
+                <li><strong>Available Seats:</strong> {{ class.available_seats }}</li>
+                <li><strong>Max Students:</strong> {{ class.max_students }}</li>
+                <li><strong>Status:</strong> 
+                    {% if class.is_full %}
+                        <span class="text-red-600">Full</span>
+                    {% else %}
+                        <span class="text-green-600">Open</span>
+                    {% endif %}
+                </li>
+            </ul>
+        </div>
+    </div>
+    
+    <div class="flex space-x-4">
+        <a href="{% url 'classes:list' %}" 
+           class="bg-gray-500 hover:bg-gray-600 text-white font-semibold py-2 px-6 rounded-lg transition-colors">
+            Back to List
+        </a>
+        
+        {% if not class.is_full %}
+        <a href="{% url 'classes:enroll' class.pk %}" 
+           class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg transition-colors">
+            Enroll (Coming Soon)
+        </a>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
