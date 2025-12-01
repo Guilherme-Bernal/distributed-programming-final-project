@@ -6,7 +6,9 @@ A comprehensive class management system built with Django, featuring REST API an
 ![Python](https://img.shields.io/badge/Python-3.13-blue.svg)
 ![gRPC](https://img.shields.io/badge/gRPC-1.60.0-orange.svg)
 ![Docker](https://img.shields.io/badge/Docker-Ready-blue.svg)
-![License](https://img.shields.io/badge/License-MIT-yellow.svg)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+
+
 
 ---
 
