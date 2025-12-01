@@ -224,7 +224,7 @@ Visit http://localhost:8000
 ### Administrator
 ```
 Username: admin
-Password: admin123
+Password: 12345678
 Role: Full system access
 ```
 
