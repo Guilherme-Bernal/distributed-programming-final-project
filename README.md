@@ -1,3 +1,16 @@
+## 👨‍💻 Autores
+
+**TIN1**  
+- Felipe Perrella dos Santos — RA: 210298  
+- Lucas Foltran — RA: 222906  
+
+**TIN2**  
+- Luiz Henrique Grosso — RA: 190106  
+- Guilherme Savassa Bernal — RA: 210029  
+- Vitor Silva Bueno — RA: 190925  
+
+
+
 # 🎓 Gerenciador de Turmas - Projeto Final de Programação Distribuída
 
 Um sistema completo de gerenciamento de turmas construído com Django, apresentando camadas de comunicação REST API e gRPC. Este projeto demonstra arquitetura web moderna com comunicação de microsserviços.
@@ -538,16 +551,6 @@ Este projeto atende todos os requisitos do Projeto Final de Programação Distri
 
 Este projeto está licenciado sob a GNU GENERAL PUBLIC LICENSE - veja o arquivo [LICENSE](LICENSE) para detalhes.
 
----
-
-## 👨‍💻 Autor
-
-**Guilherme Bernal**  
-Estudante de Engenharia da Computação - 10º Semestre  
-Universidade Facens - São Paulo, Brasil  
-
-- GitHub: [@Guilherme-Bernal](https://github.com/Guilherme-Bernal)
-- LinkedIn: [Guilherme-Bernal](https://www.linkedin.com/in/guilherme-savassa-bernal/)
 
 ---
 
