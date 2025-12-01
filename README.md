@@ -6,7 +6,7 @@ Um sistema completo de gerenciamento de turmas construído com Django, apresenta
 ![Python](https://img.shields.io/badge/Python-3.13-blue.svg)
 ![gRPC](https://img.shields.io/badge/gRPC-1.60.0-orange.svg)
 ![Docker](https://img.shields.io/badge/Docker-Pronto-blue.svg)
-![License](https://img.shields.io/badge/Licença-MIT-yellow.svg)
+[![Licença: GPL v3](https://img.shields.io/badge/Licen%C3%A7a-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 > 📖 **[Read this in English](README_EN.md)** | **Leia em Português** (você está aqui)
 
