@@ -1,3 +1,14 @@
+## 👨‍💻 Author
+
+**TIN1**  
+- Felipe Perrella dos Santos — RA: 210298  
+- Lucas Foltran — RA: 222906  
+
+**TIN2**  
+- Luiz Henrique Grosso — RA: 190106  
+- Guilherme Savassa Bernal — RA: 210029  
+- Vitor Silva Bueno — RA: 190925  
+
 # 🎓 Class Manager - Distributed Programming Final Project
 
 A comprehensive class management system built with Django, featuring REST API and gRPC communication layers. This project demonstrates modern web architecture with microservices communication.
@@ -568,16 +579,7 @@ Contributions are welcome! Please follow these steps:
 
 This project is licensed under the GNU License - see the [LICENSE](LICENSE) file for details.
 
----
 
-## 👨‍💻 Author
-
-**Guilherme Ferreira**  
-Computer Engineering Student - 10th Semester  
-Facens University - São Paulo, Brazil  
-
-- GitHub: [@Guilherme-Bernal](https://github.com/Guilherme-Bernal)
-- LinkedIn: [LinkedIn](https://www.linkedin.com/in/guilherme-savassa-bernal/)
 
 
 ---
