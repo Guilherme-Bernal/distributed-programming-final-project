@@ -222,7 +222,7 @@ Visite http://localhost:8000
 ### Administrador
 ```
 Usuário: admin
-Senha: admin123
+Senha: 12345678
 Função: Acesso completo ao sistema
 ```
 
