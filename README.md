@@ -589,9 +589,6 @@ Se você encontrar algum problema ou tiver dúvidas:
 
 <div align="center">
 
-**⭐ Se você achar este projeto útil, considere dar uma estrela! ⭐**
 
-Feito com ❤️ para o Projeto Final de Programação Distribuída  
-Universidade Facens - 2024/2025
 
 </div>
