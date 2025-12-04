@@ -618,8 +618,5 @@ If you encounter any issues or have questions:
 
 <div align="center">
 
-**⭐ If you find this project useful, please consider giving it a star! ⭐**
-
-Made with ❤️ for Distributed Programming Final Project
 
 </div>
